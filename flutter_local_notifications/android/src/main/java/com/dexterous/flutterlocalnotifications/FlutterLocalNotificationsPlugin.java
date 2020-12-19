@@ -216,7 +216,13 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         }
         return notification;
     }
-
+    private static boolean setNumber(Context context, NotificationDetails notificationDetails, NotificationCompat.Builder builder) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
+        String strJson = sharedPreferences?.getString("notiList","0");
+        if (strJson != null) {
+            JSONObject res = new JSONObject();
+        }
+    }
     private static void setSmallIcon(Context context, NotificationDetails notificationDetails, NotificationCompat.Builder builder) {
         if (!StringUtils.isNullOrEmpty(notificationDetails.icon)) {
             builder.setSmallIcon(getDrawableResourceId(context, notificationDetails.icon));
