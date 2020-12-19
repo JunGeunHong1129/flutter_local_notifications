@@ -208,6 +208,7 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         setProgress(notificationDetails, builder);
         setCategory(notificationDetails, builder);
         setTimeoutAfter(notificationDetails, builder);
+        setNumber(context, builder);
         Notification notification = builder.build();
         if (notificationDetails.additionalFlags != null && notificationDetails.additionalFlags.length > 0) {
             for (int additionalFlag : notificationDetails.additionalFlags) {
@@ -216,11 +217,13 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         }
         return notification;
     }
-    private static boolean setNumber(Context context, NotificationDetails notificationDetails, NotificationCompat.Builder builder) {
+    private static void setNumber(Context context, NotificationCompat.Builder builder) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
         String strJson = sharedPreferences?.getString("notiList","0");
+        ArrayList<String> list = new ArrayList<String>();
         if (strJson != null) {
-            JSONObject res = new JSONObject();
+            JSONObject res = new JSONObject(strJson);
+            builder.setNumber(res.names().length());
         }
     }
     private static void setSmallIcon(Context context, NotificationDetails notificationDetails, NotificationCompat.Builder builder) {
