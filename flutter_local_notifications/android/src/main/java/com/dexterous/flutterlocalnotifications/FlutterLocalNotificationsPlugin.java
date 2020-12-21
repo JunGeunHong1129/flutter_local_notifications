@@ -222,7 +222,8 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         return notification;
     }
     private static void setNumber(NotificationDetails notificationDetails , NotificationCompat.Builder builder) {
-        Log.d("NotificationBadgeCount",notificationDetails.badgeCount.toString() +" : "+notificationDetails.id.toString());
+        Log.d("NotificationBadgeCount1",notificationDetails.badgeCount.toString() +" : "+notificationDetails.id.toString());
+        Log.d("NotificationBadgeCount2",(notificationDetails.id==0)+" : "+notificationDetails.setAsGroupSummary.toString());
         if(notificationDetails.id==0&&notificationDetails.setAsGroupSummary)builder.setNumber(notificationDetails.badgeCount);
     }
     private static void setSmallIcon(Context context, NotificationDetails notificationDetails, NotificationCompat.Builder builder) {
