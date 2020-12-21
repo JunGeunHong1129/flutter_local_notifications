@@ -22,6 +22,7 @@ import android.os.Build.VERSION_CODES;
 import android.service.notification.StatusBarNotification;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
@@ -66,6 +67,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -219,11 +223,17 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
     }
     private static void setNumber(Context context, NotificationCompat.Builder builder) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
-        String strJson = sharedPreferences?.getString("notiList","0");
-        ArrayList<String> list = new ArrayList<String>();
-        if (strJson != null) {
-            JSONObject res = new JSONObject(strJson);
-            builder.setNumber(res.names().length());
+        String strJson = sharedPreferences.getString("notiList","0");
+        if (strJson != "0") {
+            JSONObject res = null;
+            Log.d("Numbering Test",strJson);
+            try {
+                res = new JSONObject(strJson);
+                builder.setNumber(res.names().length());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     }
     private static void setSmallIcon(Context context, NotificationDetails notificationDetails, NotificationCompat.Builder builder) {
