@@ -224,9 +224,10 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
     private static void setNumber(Context context, NotificationCompat.Builder builder) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
         String strJson = sharedPreferences.getString("notiList","0");
+        Log.d("Numbering Test 1",strJson);
         if (strJson != "0") {
             JSONObject res = null;
-            Log.d("Numbering Test",strJson);
+            Log.d("Numbering Test 2",strJson);
             try {
                 res = new JSONObject(strJson);
                 builder.setNumber(res.names().length());
