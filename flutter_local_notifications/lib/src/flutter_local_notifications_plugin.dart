@@ -183,18 +183,22 @@ class FlutterLocalNotificationsPlugin {
               AndroidFlutterLocalNotificationsPlugin>()
           ?.show(id, title, body,
               notificationDetails: notificationDetails?.android,
-              payload: payload);
+              payload: payload,
+              badgeCount: badgeCount);
     } else if (_platform.isIOS) {
       await resolvePlatformSpecificImplementation<
               IOSFlutterLocalNotificationsPlugin>()
           ?.show(id, title, body,
-              notificationDetails: notificationDetails?.iOS, payload: payload);
+              notificationDetails: notificationDetails?.iOS,
+          payload: payload,
+          badgeCount: badgeCount);
     } else if (_platform.isMacOS) {
       await resolvePlatformSpecificImplementation<
               MacOSFlutterLocalNotificationsPlugin>()
           ?.show(id, title, body,
               notificationDetails: notificationDetails?.macOS,
-              payload: payload);
+              payload: payload,
+              badgeCount: badgeCount);
     } else {
       await FlutterLocalNotificationsPlatform.instance?.show(id, title, body);
     }
