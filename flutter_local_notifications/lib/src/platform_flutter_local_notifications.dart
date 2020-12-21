@@ -204,7 +204,7 @@ class AndroidFlutterLocalNotificationsPlugin
     String title,
     String body, {
     AndroidNotificationDetails notificationDetails,
-    String payload,
+    String payload, int badgeCount,
   }) {
     validateId(id);
     return _channel.invokeMethod(
@@ -214,6 +214,7 @@ class AndroidFlutterLocalNotificationsPlugin
         'title': title,
         'body': body,
         'payload': payload ?? '',
+        'badgeCount': badgeCount ?? 0,
         'platformSpecifics': notificationDetails?.toMap(),
       },
     );
@@ -480,7 +481,7 @@ class IOSFlutterLocalNotificationsPlugin
     String title,
     String body, {
     IOSNotificationDetails notificationDetails,
-    String payload,
+    String payload, int badgeCount
   }) {
     validateId(id);
     return _channel.invokeMethod(
@@ -490,6 +491,7 @@ class IOSFlutterLocalNotificationsPlugin
         'title': title,
         'body': body,
         'payload': payload ?? '',
+        'badgeCount': badgeCount ?? 0,
         'platformSpecifics': notificationDetails?.toMap(),
       },
     );
@@ -615,7 +617,7 @@ class MacOSFlutterLocalNotificationsPlugin
     String title,
     String body, {
     MacOSNotificationDetails notificationDetails,
-    String payload,
+    String payload, int badgeCount
   }) {
     validateId(id);
     return _channel.invokeMethod(
@@ -625,6 +627,7 @@ class MacOSFlutterLocalNotificationsPlugin
         'title': title,
         'body': body,
         'payload': payload ?? '',
+        'badgeCount': badgeCount ?? 0,
         'platformSpecifics': notificationDetails?.toMap(),
       },
     );

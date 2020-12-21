@@ -212,7 +212,7 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         setProgress(notificationDetails, builder);
         setCategory(notificationDetails, builder);
         setTimeoutAfter(notificationDetails, builder);
-        setNumber(context, builder);
+        setNumber(notificationDetails, builder);
         Notification notification = builder.build();
         if (notificationDetails.additionalFlags != null && notificationDetails.additionalFlags.length > 0) {
             for (int additionalFlag : notificationDetails.additionalFlags) {
@@ -221,21 +221,9 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         }
         return notification;
     }
-    private static void setNumber(Context context, NotificationCompat.Builder builder) {
-        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);
-        String strJson = sharedPreferences.getString("notiList","0");
-        Log.d("Numbering Test 1",strJson);
-        if (strJson != "0") {
-            JSONObject res = null;
-            Log.d("Numbering Test 2",strJson);
-            try {
-                res = new JSONObject(strJson);
-                builder.setNumber(res.names().length());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
+    private static void setNumber(NotificationDetails notificationDetails , NotificationCompat.Builder builder) {
+        Log.d("NotificationBadgeCount",notificationDetails.badgeCount.toString());
+        if(notificationDetails.badgeCount>0)builder.setNumber(notificationDetails.badgeCount);
     }
     private static void setSmallIcon(Context context, NotificationDetails notificationDetails, NotificationCompat.Builder builder) {
         if (!StringUtils.isNullOrEmpty(notificationDetails.icon)) {

@@ -176,6 +176,7 @@ class FlutterLocalNotificationsPlugin {
     String body,
     NotificationDetails notificationDetails, {
     String payload,
+    int badgeCount,
   }) async {
     if (_platform.isAndroid) {
       await resolvePlatformSpecificImplementation<
