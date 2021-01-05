@@ -250,6 +250,7 @@ extension AndroidNotificationDetailsMapper on AndroidNotificationDetails {
         'shortcutId': shortcutId,
         'additionalFlags': additionalFlags,
       }
+        ..addAll(_convertActionsToMap(actions))
         ..addAll(_convertStyleInformationToMap())
         ..addAll(_convertNotificationSoundToMap(sound))
         ..addAll(_convertLargeIconToMap());
@@ -313,5 +314,35 @@ extension AndroidNotificationDetailsMapper on AndroidNotificationDetails {
     } else {
       return <String, Object>{};
     }
+  }
+
+  Map<String, Object> _convertActionsToMap(
+      List<AndroidNotificationAction> actions) {
+    Map<String, Object> _convertActionIconToMap(AndroidBitmap icon) {
+      if (icon is DrawableResourceAndroidBitmap) {
+        return <String, Object>{
+          'largeIcon': icon.bitmap,
+          'largeIconBitmapSource': AndroidBitmapSource.drawable.index,
+        };
+      } else if (icon is FilePathAndroidBitmap) {
+        return <String, Object>{
+          'largeIcon': icon.bitmap,
+          'largeIconBitmapSource': AndroidBitmapSource.filePath.index,
+        };
+      } else {
+        return <String, Object>{};
+      }
+    }
+
+    if (actions == null) {
+      return <String, Object>{};
+    }
+    return <String, dynamic>{
+      'actions': actions.map((AndroidNotificationAction e) => <String, dynamic>{
+          'id': e.id,
+          'title': e.title,
+          ..._convertActionIconToMap(e.icon)
+        }).toList(),
+    };
   }
 }

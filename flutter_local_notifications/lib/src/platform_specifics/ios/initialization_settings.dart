@@ -1,4 +1,40 @@
 import '../../typedefs.dart';
+enum IOSNotificationActionOption{
+  authenticationRequired,
+  destructive,
+  foreground
+}
+
+class IOSNotificationAction {
+  const IOSNotificationAction(
+      this.identifier,
+      this.title,{
+        this.options = const <IOSNotificationActionOption>{}
+      });
+  final String identifier;
+  final String title;
+  final Set<IOSNotificationActionOption> options;
+}
+
+enum IOSNotificationCategoryOption{
+  customDismissAction,
+  allowInCarPlay,
+  hiddenPreviewShowTitle,
+  hiddenPreviewShowSubtitle,
+  allowAnnouncement,
+}
+
+class IOSNotificationCategory{
+  const IOSNotificationCategory(
+      this.identifier,
+      this.actions, {
+        this.options = const <IOSNotificationCategoryOption>{},
+      });
+
+  final String identifier;
+  final List<IOSNotificationAction> actions;
+  final Set<IOSNotificationCategoryOption> options;
+}
 
 /// Plugin initialization settings for iOS.
 class IOSInitializationSettings {
@@ -11,6 +47,7 @@ class IOSInitializationSettings {
     this.defaultPresentSound = true,
     this.defaultPresentBadge = true,
     this.onDidReceiveLocalNotification,
+    this.notificationCategories = const <IOSNotificationCategory>[]
   })  : assert(requestAlertPermission != null),
         assert(requestSoundPermission != null),
         assert(requestBadgePermission != null),
@@ -63,4 +100,6 @@ class IOSInitializationSettings {
   ///
   /// This property is only applicable to iOS versions older than 10.
   final DidReceiveLocalNotificationCallback onDidReceiveLocalNotification;
+
+  final List<IOSNotificationCategory> notificationCategories;
 }

@@ -11,6 +11,7 @@ class IOSNotificationDetails {
     this.badgeNumber,
     this.attachments,
     this.subtitle,
+    this.categoryIdentifier
   });
 
   /// Display an alert when the notification is triggered while app is
@@ -64,4 +65,6 @@ class IOSNotificationDetails {
   ///
   /// This property is only applicable to iOS 10 or newer.
   final String subtitle;
+
+  final String categoryIdentifier;
 }

@@ -6,6 +6,18 @@ import 'enums.dart';
 import 'notification_sound.dart';
 import 'styles/style_information.dart';
 
+class AndroidNotificationAction {
+  const AndroidNotificationAction(
+      this.id,
+      this.title,{
+    this.icon,
+});
+  
+  final String id;
+  final String title;
+  final AndroidBitmap icon;
+}
+
 /// Contains notification details specific to Android.
 class AndroidNotificationDetails {
   /// Constructs an instance of [AndroidNotificationDetails].
@@ -48,7 +60,8 @@ class AndroidNotificationDetails {
     this.category,
     this.fullScreenIntent = false,
     this.shortcutId,
-    this.additionalFlags,
+    this.additionalFlags, 
+        this.actions,
   });
 
   /// The icon that should be used when displaying the notification.
@@ -251,4 +264,6 @@ class AndroidNotificationDetails {
   /// For a list of a values, refer to the documented constants prefixed with "FLAG_" (without the quotes) at https://developer.android.com/reference/android/app/Notification.html#constants_1.
   /// For example, use a value of 4 to allow the audio to repeat as documented at https://developer.android.com/reference/android/app/Notification.html#FLAG_INSISTEN
   final Int32List additionalFlags;
+  
+  final List<AndroidNotificationAction> actions;
 }

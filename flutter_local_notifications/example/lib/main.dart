@@ -70,7 +70,24 @@ Future<void> main() async {
               (int id, String title, String body, String payload) async {
             didReceiveLocalNotificationSubject.add(ReceivedNotification(
                 id: id, title: title, body: body, payload: payload));
-          });
+          },
+          notificationCategories: [
+        const IOSNotificationCategory("demoCategory", <IOSNotificationAction>[
+          IOSNotificationAction("id_1", "Action 1"),
+          IOSNotificationAction("id_2", "Action 2",
+              options: <IOSNotificationActionOption>{
+                IOSNotificationActionOption.destructive
+              }),
+          IOSNotificationAction("id_3", "Action 3",
+              options: <IOSNotificationActionOption>{
+                IOSNotificationActionOption.foreground
+              }),
+        ],
+          options: <IOSNotificationCategoryOption>{
+            IOSNotificationCategoryOption.hiddenPreviewShowTitle
+          }
+        )
+      ]);
   const MacOSInitializationSettings initializationSettingsMacOS =
       MacOSInitializationSettings(
           requestAlertPermission: false,
@@ -129,6 +146,7 @@ class HomePage extends StatefulWidget {
   }) : super(key: key);
 
   final NotificationAppLaunchDetails notificationAppLaunchDetails;
+
   bool get didNotificationLaunchApp =>
       notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
 
@@ -268,6 +286,12 @@ class _HomePageState extends State<HomePage> {
                       ),
                     PaddedRaisedButton(
                       buttonText: 'Show plain notification with payload',
+                      onPressed: () async {
+                        await _showNotification();
+                      },
+                    ),
+                    PaddedRaisedButton(
+                      buttonText: 'Show plain notification with actions',
                       onPressed: () async {
                         await _showNotification();
                       },
@@ -570,6 +594,48 @@ class _HomePageState extends State<HomePage> {
             ticker: 'ticker');
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0, 'plain title', 'plain body', platformChannelSpecifics,
+        payload: 'item x');
+  }
+
+  Future<void> _showNotificationWithActions() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'your channel id',
+      'your channel name',
+      'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+      actions: <AndroidNotificationAction>[
+        AndroidNotificationAction(
+          'id_1',
+          'Action 1',
+          icon: DrawableResourceAndroidBitmap('food'),
+        ),
+        AndroidNotificationAction(
+          'id_2',
+          'Action 2',
+          icon: DrawableResourceAndroidBitmap('food'),
+        ),
+        AndroidNotificationAction(
+          'id_3',
+          'Action 3',
+          icon: DrawableResourceAndroidBitmap('food'),
+        ),
+      ],
+    );
+
+    const IOSNotificationDetails iosNotificationDetails =
+    IOSNotificationDetails(
+      categoryIdentifier: 'demoCategory',
+    );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iosNotificationDetails,
+    );
     await flutterLocalNotificationsPlugin.show(
         0, 'plain title', 'plain body', platformChannelSpecifics,
         payload: 'item x');
@@ -1288,7 +1354,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _showNotificationWithChronometer() async {
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
-    AndroidNotificationDetails(
+        AndroidNotificationDetails(
       'your channel id',
       'your channel name',
       'your channel description',
@@ -1298,7 +1364,7 @@ class _HomePageState extends State<HomePage> {
       usesChronometer: true,
     );
     final NotificationDetails platformChannelSpecifics =
-    NotificationDetails(android: androidPlatformChannelSpecifics);
+        NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
         0, 'plain title', 'plain body', platformChannelSpecifics,
         payload: 'item x');
@@ -1532,6 +1598,7 @@ class SecondScreen extends StatefulWidget {
 
 class SecondScreenState extends State<SecondScreen> {
   String _payload;
+
   @override
   void initState() {
     super.initState();
