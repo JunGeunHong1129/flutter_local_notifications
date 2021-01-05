@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
 import 'package:timezone/timezone.dart';
 
+import 'callback_dispatcher.dart';
 import 'helpers.dart';
 import 'platform_specifics/android/active_notification.dart';
 import 'platform_specifics/android/initialization_settings.dart';
@@ -330,13 +332,18 @@ class IOSFlutterLocalNotificationsPlugin
   Future<bool> initialize(
     IOSInitializationSettings initializationSettings, {
     SelectNotificationCallback onSelectNotification,
+        NotificationActionCallback backgroundHandler
   }) async {
     _onSelectNotification = onSelectNotification;
     _onDidReceiveLocalNotification =
         initializationSettings.onDidReceiveLocalNotification;
     _channel.setMethodCallHandler(_handleMethod);
-    return await _channel.invokeMethod(
-        'initialize', initializationSettings.toMap());
+
+    final Map<String, dynamic> arguments = initializationSettings.toMap();
+
+    _evaluateBackgroundHandler(backgroundHandler, arguments);
+
+    return await _channel.invokeMethod('initialize', arguments);
   }
 
   /// Requests the specified permission(s) from user and returns current
@@ -661,5 +668,23 @@ class MacOSFlutterLocalNotificationsPlugin
       default:
         return Future<void>.error('Method not defined');
     }
+  }
+}
+void _evaluateBackgroundHandler(
+    NotificationActionCallback backgroundHandler,
+    Map<String, Object> arguments,
+    ) {
+  if (backgroundHandler != null) {
+    final CallbackHandle callback =
+    PluginUtilities.getCallbackHandle(backgroundHandler);
+    assert(callback != null, '''
+          The backgroundHandler needs to be either a static function or a top 
+          level function to be accessible as a Flutter entry point.''');
+
+    final CallbackHandle dispatcher =
+    PluginUtilities.getCallbackHandle(callbackDispatcher);
+
+    arguments['dispatcher_handle'] = dispatcher.toRawHandle();
+    arguments['callback_handle'] = callback.toRawHandle();
   }
 }
