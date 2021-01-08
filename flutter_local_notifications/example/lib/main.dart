@@ -47,6 +47,10 @@ class ReceivedNotification {
 ///
 /// Please download the complete example app from the GitHub repository where
 /// all the setup has been done
+///
+void notificationTapBackground(String id) {
+  print('notification action tapped: $id');
+}
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,31 +67,42 @@ Future<void> main() async {
   /// done later
   final IOSInitializationSettings initializationSettingsIOS =
       IOSInitializationSettings(
-          requestAlertPermission: false,
-          requestBadgePermission: false,
-          requestSoundPermission: false,
-          onDidReceiveLocalNotification:
-              (int id, String title, String body, String payload) async {
-            didReceiveLocalNotificationSubject.add(ReceivedNotification(
-                id: id, title: title, body: body, payload: payload));
-          },
-          notificationCategories: [
-        const IOSNotificationCategory("demoCategory", <IOSNotificationAction>[
-          IOSNotificationAction("id_1", "Action 1"),
-          IOSNotificationAction("id_2", "Action 2",
-              options: <IOSNotificationActionOption>{
-                IOSNotificationActionOption.destructive
-              }),
-          IOSNotificationAction("id_3", "Action 3",
-              options: <IOSNotificationActionOption>{
-                IOSNotificationActionOption.foreground
-              }),
+        requestAlertPermission: false,
+        requestBadgePermission: false,
+        requestSoundPermission: false,
+        onDidReceiveLocalNotification:
+            (int id, String title, String body, String payload) async {
+          didReceiveLocalNotificationSubject.add(
+            ReceivedNotification(
+                id: id, title: title, body: body, payload: payload),
+          );
+        },
+        notificationCategories: [
+          const IOSNotificationCategory(
+            'demoCategory',
+            <IOSNotificationAction>[
+              IOSNotificationAction('id_1', 'Action 1'),
+              IOSNotificationAction(
+                'id_2',
+                'Action 2',
+                options: <IOSNotificationActionOption>{
+                  IOSNotificationActionOption.destructive,
+                },
+              ),
+              IOSNotificationAction(
+                'id_3',
+                'Action 3',
+                options: <IOSNotificationActionOption>{
+                  IOSNotificationActionOption.foreground,
+                },
+              ),
+            ],
+            options: <IOSNotificationCategoryOption>{
+              IOSNotificationCategoryOption.hiddenPreviewShowTitle,
+            },
+          )
         ],
-          options: <IOSNotificationCategoryOption>{
-            IOSNotificationCategoryOption.hiddenPreviewShowTitle
-          }
-        )
-      ]);
+      );
   const MacOSInitializationSettings initializationSettingsMacOS =
       MacOSInitializationSettings(
           requestAlertPermission: false,
@@ -103,7 +118,9 @@ Future<void> main() async {
       debugPrint('notification payload: $payload');
     }
     selectNotificationSubject.add(payload);
-  });
+  },
+    backgroundHandler: notificationTapBackground
+  );
   runApp(
     MaterialApp(
       home: HomePage(
@@ -293,7 +310,7 @@ class _HomePageState extends State<HomePage> {
                     PaddedRaisedButton(
                       buttonText: 'Show plain notification with actions',
                       onPressed: () async {
-                        await _showNotification();
+                        await _showNotificationWithActions();
                       },
                     ),
                     PaddedRaisedButton(

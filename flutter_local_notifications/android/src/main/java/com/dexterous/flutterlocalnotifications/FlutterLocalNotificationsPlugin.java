@@ -32,9 +32,11 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.app.Person;
 import androidx.core.graphics.drawable.IconCompat;
 
+import com.dexterous.flutterlocalnotifications.isolate.IsolatePreferences;
 import com.dexterous.flutterlocalnotifications.models.DateTimeComponents;
 import com.dexterous.flutterlocalnotifications.models.IconSource;
 import com.dexterous.flutterlocalnotifications.models.MessageDetails;
+import com.dexterous.flutterlocalnotifications.models.NotificationAction;
 import com.dexterous.flutterlocalnotifications.models.NotificationChannelAction;
 import com.dexterous.flutterlocalnotifications.models.NotificationChannelDetails;
 import com.dexterous.flutterlocalnotifications.models.NotificationChannelGroupDetails;
@@ -94,6 +96,9 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
     private static final String SELECT_NOTIFICATION = "SELECT_NOTIFICATION";
     private static final String SCHEDULED_NOTIFICATIONS = "scheduled_notifications";
     private static final String INITIALIZE_METHOD = "initialize";
+    private static final String DISPATCHER_HANDLE = "dispatcher_handle";
+    private static final String CALLBACK_HANDLE = "callback_handle";
+    private static final String GET_CALLBACK_HANDLE_METHOD = "getCallbackHandle";
     private static final String CREATE_NOTIFICATION_CHANNEL_GROUP_METHOD = "createNotificationChannelGroup";
     private static final String DELETE_NOTIFICATION_CHANNEL_GROUP_METHOD = "deleteNotificationChannelGroup";
     private static final String CREATE_NOTIFICATION_CHANNEL_METHOD = "createNotificationChannel";
@@ -175,6 +180,13 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
                 .setOngoing(BooleanUtils.getValue(notificationDetails.ongoing))
                 .setOnlyAlertOnce(BooleanUtils.getValue(notificationDetails.onlyAlertOnce));
 
+        if(notificationDetails.actions != null) {
+            int requestCode = 999;
+            for (NotificationAction action : notificationDetails.actions) {
+                builder.addAction(new NotificationCompat.Action(null, action.title, PendingIntent.getBroadcast(context, requestCode ++,
+                        new Intent(context, ActionBroadcastReceiver.class).setAction(ActionBroadcastReceiver.ACTION_TAPPED).putExtra("id", action.id), 0)));
+            }
+        }
         setSmallIcon(context, notificationDetails, builder);
         if (!StringUtils.isNullOrEmpty(notificationDetails.largeIcon)) {
             builder.setLargeIcon(getBitmapFromSource(context, notificationDetails.largeIcon, notificationDetails.largeIconBitmapSource));
@@ -914,6 +926,10 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
                 initialize(call, result);
                 break;
             }
+            case GET_CALLBACK_HANDLE_METHOD: {
+                getCallbackHandle(result);
+                break;
+            }
             case GET_NOTIFICATION_APP_LAUNCH_DETAILS_METHOD: {
                 getNotificationAppLaunchDetails(result);
                 break;
@@ -1025,7 +1041,10 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
             result.success(null);
         }
     }
-
+    private void getCallbackHandle( Result result) {
+        final Long handle = IsolatePreferences.getCallbackHandle(applicationContext);
+        result.success(handle);
+    }
     private void getNotificationAppLaunchDetails(Result result) {
         Map<String, Object> notificationAppLaunchDetails = new HashMap<>();
         String payload = null;

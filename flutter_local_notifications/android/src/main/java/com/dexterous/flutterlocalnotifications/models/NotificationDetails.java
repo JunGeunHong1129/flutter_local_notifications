@@ -18,6 +18,7 @@ import com.dexterous.flutterlocalnotifications.models.styles.MessagingStyleInfor
 import com.dexterous.flutterlocalnotifications.models.styles.StyleInformation;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Keep
@@ -118,7 +119,7 @@ public class NotificationDetails {
     private static final String SHORTCUT_ID = "shortcutId";
     
     private static final String BADGE_COUNT="badgeCount";
-
+    private static final String ACTIONS = "actions";
 
     public Integer id;
     public String title;
@@ -177,7 +178,7 @@ public class NotificationDetails {
     public Boolean fullScreenIntent;
     public String shortcutId;
     public Integer badgeCount;
-
+    public List<NotificationAction> actions;
 
 
     // Note: this is set on the Android to save details about the icon that should be used when re-hydrating scheduled notifications when a device has been restarted.
@@ -251,6 +252,22 @@ public class NotificationDetails {
             notificationDetails.fullScreenIntent = (Boolean) platformChannelSpecifics.get((FULL_SCREEN_INTENT));
             notificationDetails.shortcutId = (String) platformChannelSpecifics.get(SHORTCUT_ID);
             notificationDetails.additionalFlags = (int[]) platformChannelSpecifics.get(ADDITIONAL_FLAGS);
+
+            if(platformChannelSpecifics.containsKey(ACTIONS)) {
+                List<Map<String, Object>> inputActions = (List<Map<String, Object>>) platformChannelSpecifics.get(ACTIONS);
+                if(!inputActions.isEmpty()) {
+                    for (Map<String, Object> input : inputActions) {
+                        final NotificationAction action = NotificationAction.from(input);
+                        if(action != null) {
+                            if(notificationDetails.actions == null) {
+                                notificationDetails.actions = new ArrayList<>();
+                            }
+                            notificationDetails.actions.add(action);
+                        }
+                    }
+                }
+            }
+
         }
     }
 

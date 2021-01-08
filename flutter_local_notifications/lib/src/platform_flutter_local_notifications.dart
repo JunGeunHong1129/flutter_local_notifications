@@ -77,11 +77,16 @@ class AndroidFlutterLocalNotificationsPlugin
   Future<bool> initialize(
     AndroidInitializationSettings initializationSettings, {
     SelectNotificationCallback onSelectNotification,
-  }) async {
+        NotificationActionCallback backgroundHandler
+      }) async {
     _onSelectNotification = onSelectNotification;
     _channel.setMethodCallHandler(_handleMethod);
+    Map<String, dynamic> arguments = initializationSettings.toMap();
+
+    _evaluateBackgroundHandler(backgroundHandler, arguments);
+
     return await _channel.invokeMethod(
-        'initialize', initializationSettings.toMap());
+        'initialize', arguments);
   }
 
   /// Schedules a notification to be shown at the specified date and time.

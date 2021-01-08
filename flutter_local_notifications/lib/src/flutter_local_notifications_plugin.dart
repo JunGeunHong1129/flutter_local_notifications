@@ -7,6 +7,7 @@ import 'package:platform/platform.dart';
 import 'package:timezone/timezone.dart';
 
 import '../flutter_local_notifications.dart';
+import '../flutter_local_notifications.dart';
 import 'initialization_settings.dart';
 import 'notification_details.dart';
 import 'platform_flutter_local_notifications.dart';
@@ -116,17 +117,22 @@ class FlutterLocalNotificationsPlugin {
   Future<bool> initialize(
     InitializationSettings initializationSettings, {
     SelectNotificationCallback onSelectNotification,
+        NotificationActionCallback backgroundHandler,
   }) async {
     if (_platform.isAndroid) {
       return resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>()
           ?.initialize(initializationSettings?.android,
-              onSelectNotification: onSelectNotification);
+              onSelectNotification: onSelectNotification,
+          backgroundHandler: backgroundHandler
+      );
     } else if (_platform.isIOS) {
       return await resolvePlatformSpecificImplementation<
               IOSFlutterLocalNotificationsPlugin>()
           ?.initialize(initializationSettings?.iOS,
-              onSelectNotification: onSelectNotification);
+              onSelectNotification: onSelectNotification,
+        backgroundHandler: backgroundHandler,
+      );
     } else if (_platform.isMacOS) {
       return await resolvePlatformSpecificImplementation<
               MacOSFlutterLocalNotificationsPlugin>()
