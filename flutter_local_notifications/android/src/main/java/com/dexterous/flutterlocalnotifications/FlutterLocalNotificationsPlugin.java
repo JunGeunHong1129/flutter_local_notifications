@@ -1064,6 +1064,12 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
             return;
         }
 
+        Long dispatcherHandle = call.argument(DISPATCHER_HANDLE);
+        Long callbackHandle = call.argument(CALLBACK_HANDLE);
+        if (dispatcherHandle != null && callbackHandle != null) {
+            IsolatePreferences.saveCallbackKeys(applicationContext, dispatcherHandle, callbackHandle);
+        }
+
         initAndroidThreeTen(applicationContext);
 
         SharedPreferences sharedPreferences = applicationContext.getSharedPreferences(SHARED_PREFERENCES_KEY, Context.MODE_PRIVATE);

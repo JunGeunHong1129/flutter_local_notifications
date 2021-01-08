@@ -3,6 +3,7 @@ package com.dexterous.flutterlocalnotifications;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -33,6 +34,7 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("onReceive","received");
         final String id = intent.getStringExtra("id");
 
         final Map<String, Object> action = new HashMap<>();
@@ -61,6 +63,7 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onListen(Object arguments, EventSink events) {
+            Log.d("onListen","start to listen");
             for(Map<String, Object> item : cache)
                 events.success(item);
 
@@ -73,6 +76,7 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
     }
 
     private void startEngine(Context context) {
+        Log.d("onStartEngine","engine is began");
         long dispatcherHandle = IsolatePreferences.getCallbackDispatcherHandle(context);
 
         if(dispatcherHandle != -1L && engine == null) {
