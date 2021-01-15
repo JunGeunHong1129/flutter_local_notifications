@@ -50,11 +50,15 @@ class ReceivedNotification {
 ///
 void notificationTapBackground(Map<String, dynamic> map) {
 
+  MethodChannel channel = MethodChannel("dexterous.com/flutter/local_notifications");
+
   print('notification action tapped: ${map["act_id"]}');
   print('notification id: ${map["noti_id"]}');
   if(map["act_id"] == 'id_2') {
     print("삭제 시작");
     // wvcIns.flnApiInstance.flnPlugin.cancel(map["noti_id"]);
+  }else{
+    channel.invokeMethod("SELECT_NOTIFICATION");
   }
 }
 Future<void> main() async {

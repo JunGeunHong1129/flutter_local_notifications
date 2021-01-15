@@ -928,8 +928,10 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
             case INITIALIZE_METHOD: {
                 initialize(call, result);
                 break;
-            }
-            case GET_CALLBACK_HANDLE_METHOD: {
+            } case "CALL_NEW_INTENT_WITH_SNCALLBACK": {
+                sendNotificationPayloadMessage(mainActivity.getIntent());
+                break;
+            }case GET_CALLBACK_HANDLE_METHOD: {
                 getCallbackHandle(result);
                 break;
             }

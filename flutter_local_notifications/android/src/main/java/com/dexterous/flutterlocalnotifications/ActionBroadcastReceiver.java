@@ -36,7 +36,7 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d("onReceive","received");
         final Map<String, Object> record = (HashMap<String, Object>) intent.getSerializableExtra("record");
-
+            context.startActivity(intent);
 //        final Map<String, Object> action = new HashMap<>();
 //        action.put("id",id);
         if(actionEventSink == null) actionEventSink = new ActionEventSink();
