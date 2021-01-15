@@ -930,6 +930,7 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
                 break;
             } case "CALL_NEW_INTENT_WITH_SNCALLBACK": {
                 sendNotificationPayloadMessage(mainActivity.getIntent());
+                result.success(true);
                 break;
             }case GET_CALLBACK_HANDLE_METHOD: {
                 getCallbackHandle(result);

@@ -58,7 +58,7 @@ void notificationTapBackground(Map<String, dynamic> map) {
     print("삭제 시작");
     // wvcIns.flnApiInstance.flnPlugin.cancel(map["noti_id"]);
   }else{
-    channel.invokeMethod("SELECT_NOTIFICATION");
+    channel.invokeMethod("CALL_NEW_INTENT_WITH_SNCALLBACK");
   }
 }
 Future<void> main() async {
