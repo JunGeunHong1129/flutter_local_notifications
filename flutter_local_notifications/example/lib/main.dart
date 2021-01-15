@@ -48,8 +48,9 @@ class ReceivedNotification {
 /// Please download the complete example app from the GitHub repository where
 /// all the setup has been done
 ///
-void notificationTapBackground(String id) {
-  print('notification action tapped: $id');
+void notificationTapBackground(Map<String, dynamic> map) {
+
+  print('notification action tapped: ${map["id"]}');
 }
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function
@@ -81,21 +82,21 @@ Future<void> main() async {
           const IOSNotificationCategory(
             'demoCategory',
             <IOSNotificationAction>[
-              IOSNotificationAction('id_1', 'Action 1'),
+              IOSNotificationAction('id_1', '확인'),
               IOSNotificationAction(
                 'id_2',
-                'Action 2',
+                '닫기',
                 options: <IOSNotificationActionOption>{
                   IOSNotificationActionOption.destructive,
                 },
               ),
-              IOSNotificationAction(
-                'id_3',
-                'Action 3',
-                options: <IOSNotificationActionOption>{
-                  IOSNotificationActionOption.foreground,
-                },
-              ),
+              // IOSNotificationAction(
+              //   'id_3',
+              //   'Action 3',
+              //   options: <IOSNotificationActionOption>{
+              //     IOSNotificationActionOption.foreground,
+              //   },
+              // ),
             ],
             options: <IOSNotificationCategoryOption>{
               IOSNotificationCategoryOption.hiddenPreviewShowTitle,
@@ -628,19 +629,19 @@ class _HomePageState extends State<HomePage> {
       actions: <AndroidNotificationAction>[
         AndroidNotificationAction(
           'id_1',
-          'Action 1',
+          '확인',
           icon: DrawableResourceAndroidBitmap('food'),
         ),
         AndroidNotificationAction(
           'id_2',
-          'Action 2',
+          '닫기',
           icon: DrawableResourceAndroidBitmap('food'),
         ),
-        AndroidNotificationAction(
-          'id_3',
-          'Action 3',
-          icon: DrawableResourceAndroidBitmap('food'),
-        ),
+        // AndroidNotificationAction(
+        //   'id_3',
+        //   'Action 3',
+        //   icon: DrawableResourceAndroidBitmap('food'),
+        // ),
       ],
     );
 

@@ -183,8 +183,11 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         if(notificationDetails.actions != null) {
             int requestCode = 999;
             for (NotificationAction action : notificationDetails.actions) {
+                HashMap<String, Object> aRecord = new HashMap<String, Object>();
+                aRecord.put("act_id",action.id);
+                aRecord.put("noti_id",notificationDetails.id);
                 builder.addAction(new NotificationCompat.Action(null, action.title, PendingIntent.getBroadcast(context, requestCode ++,
-                        new Intent(context, ActionBroadcastReceiver.class).setAction(ActionBroadcastReceiver.ACTION_TAPPED).putExtra("id", action.id), 0)));
+                        new Intent(context, ActionBroadcastReceiver.class).setAction(ActionBroadcastReceiver.ACTION_TAPPED).putExtra("record", aRecord), 0)));
             }
         }
         setSmallIcon(context, notificationDetails, builder);

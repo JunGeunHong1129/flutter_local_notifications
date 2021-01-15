@@ -35,13 +35,13 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("onReceive","received");
-        final String id = intent.getStringExtra("id");
+        final Map<String, Object> record = (HashMap<String, Object>) intent.getSerializableExtra("record");
 
-        final Map<String, Object> action = new HashMap<>();
-        action.put("id",id);
+//        final Map<String, Object> action = new HashMap<>();
+//        action.put("id",id);
         if(actionEventSink == null) actionEventSink = new ActionEventSink();
 
-        actionEventSink.addItem(action);
+        actionEventSink.addItem(record);
 
         startEngine(context);
     }
