@@ -878,10 +878,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         if (!actionEventSink) {
             actionEventSink = [[ActionEventSink alloc] init];
         }
-        
-        [actionEventSink addItem:@{
-            @"id": response.actionIdentifier
-        }];
+        [actionEventSink addItem:@{@"act_id": response.actionIdentifier, @"noti_id":response.notification.request.content.userInfo[NOTIFICATION_ID]}];
         
         
         [self startEngineIfNeeded];

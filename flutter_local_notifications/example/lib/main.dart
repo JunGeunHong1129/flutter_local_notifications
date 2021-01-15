@@ -50,7 +50,12 @@ class ReceivedNotification {
 ///
 void notificationTapBackground(Map<String, dynamic> map) {
 
-  print('notification action tapped: ${map["id"]}');
+  print('notification action tapped: ${map["act_id"]}');
+  print('notification id: ${map["noti_id"]}');
+  if(map["act_id"] == 'id_2') {
+    print("삭제 시작");
+    // wvcIns.flnApiInstance.flnPlugin.cancel(map["noti_id"]);
+  }
 }
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function
@@ -655,7 +660,7 @@ class _HomePageState extends State<HomePage> {
       iOS: iosNotificationDetails,
     );
     await flutterLocalNotificationsPlugin.show(
-        0, 'plain title', 'plain body', platformChannelSpecifics,
+        123, 'plain title', 'plain body', platformChannelSpecifics,
         payload: 'item x');
   }
 
