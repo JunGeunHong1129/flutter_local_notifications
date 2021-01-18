@@ -239,7 +239,20 @@ static FlutterError *getFlutterError(NSError *error) {
         result |= [option intValue];
     }
     
-    return result;
+    switch (result) {
+        case 1:
+            return UNNotificationActionOptionAuthenticationRequired;
+            break;
+        case 2:
+            return UNNotificationActionOptionDestructive;
+            break;
+        case 3:
+            return UNNotificationActionOptionForeground;
+            break;
+        default:
+            return UNNotificationActionOptionNone;
+            break;
+    }
 }
 
 /// Extracts notification categories from [arguments] and configures them as appropriate.
@@ -259,6 +272,8 @@ static FlutterError *getFlutterError(NSError *error) {
                 
                 NSArray* actions = category[@"actions"];
                 for (NSDictionary *action in actions) {
+                                        
+                    NSLog(@"%lu", [self parseNotificationActionOptions:action[@"options"]]);
                     [newActions addObject:[UNNotificationAction actionWithIdentifier:action[@"identifier"]
                                                                                title:action[@"title"]
                                                                              options:[self parseNotificationActionOptions:action[@"options"]]]];

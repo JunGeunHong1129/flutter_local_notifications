@@ -56,7 +56,9 @@ void notificationTapBackground(Map<String, dynamic> map) {
   print('notification id: ${map["noti_id"]}');
   if(map["act_id"] == 'id_2') {
     print("삭제 시작");
-    // wvcIns.flnApiInstance.flnPlugin.cancel(map["noti_id"]);
+    // // wvcIns.flnApiInstance.flnPlugin.cancel(map["noti_id"]);
+    // FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
+    // plugin.cancel(map['noti_id']);
   }else{
 
   }
@@ -91,7 +93,12 @@ Future<void> main() async {
           const IOSNotificationCategory(
             'demoCategory',
             <IOSNotificationAction>[
-              IOSNotificationAction('id_1', '확인'),
+              IOSNotificationAction(
+                  'id_1',
+                  '확인',
+                  options: <IOSNotificationActionOption>{
+                IOSNotificationActionOption.foreground,
+              }),
               IOSNotificationAction(
                 'id_2',
                 '닫기',
@@ -99,13 +106,6 @@ Future<void> main() async {
                   IOSNotificationActionOption.destructive,
                 },
               ),
-              // IOSNotificationAction(
-              //   'id_3',
-              //   'Action 3',
-              //   options: <IOSNotificationActionOption>{
-              //     IOSNotificationActionOption.foreground,
-              //   },
-              // ),
             ],
             options: <IOSNotificationCategoryOption>{
               IOSNotificationCategoryOption.hiddenPreviewShowTitle,

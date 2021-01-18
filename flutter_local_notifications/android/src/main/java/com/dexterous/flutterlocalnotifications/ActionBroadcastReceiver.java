@@ -1,5 +1,6 @@
 package com.dexterous.flutterlocalnotifications;
 
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -46,12 +47,27 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
         startEngine(context);
         if(record.get("act_id").equals("id_1")) {
             Log.d("system","activity start");
-            Intent intent1 = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-            intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
+            Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+            startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
                     Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-            context.startActivity(intent1);
+
+            notiCancel(context, record); // cancel notification
+
+            Intent statusBarShutIntent = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            context.sendBroadcast(statusBarShutIntent); // shut status bar
+
+            context.startActivity(startActivityIntent); // app launch
+
+        }else{
+            notiCancel(context, record);
         }
+
+    }
+
+    public void notiCancel(Context context, Map<String, Object> record){
+        NotificationManager notificationManager = (NotificationManager)context.getSystemService(context.NOTIFICATION_SERVICE);
+        notificationManager.cancel((Integer) record.get("noti_id"));
     }
 
     private static class ActionEventSink implements StreamHandler {
