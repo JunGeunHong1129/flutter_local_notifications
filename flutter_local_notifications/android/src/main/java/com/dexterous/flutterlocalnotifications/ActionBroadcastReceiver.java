@@ -1,8 +1,10 @@
 package com.dexterous.flutterlocalnotifications;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -36,14 +38,20 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d("onReceive","received");
         final Map<String, Object> record = (HashMap<String, Object>) intent.getSerializableExtra("record");
-            context.startActivity(intent);
-//        final Map<String, Object> action = new HashMap<>();
-//        action.put("id",id);
+
         if(actionEventSink == null) actionEventSink = new ActionEventSink();
 
         actionEventSink.addItem(record);
-
+        
         startEngine(context);
+        if(record.get("act_id").equals("id_1")) {
+            Log.d("system","activity start");
+            Intent intent1 = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+            intent1.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
+                    Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            context.startActivity(intent1);
+        }
     }
 
     private static class ActionEventSink implements StreamHandler {
