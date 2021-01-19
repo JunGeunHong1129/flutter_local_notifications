@@ -46,7 +46,7 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
         
         startEngine(context);
         if(record.get("act_id").equals("id_1")) {
-            String str = String.valueOf(record.get("record"));
+            String str = String.valueOf(record.get("noti_id"));
             Log.d("system","activity start");
             Log.d("system","notiId : "+ str);
             Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
