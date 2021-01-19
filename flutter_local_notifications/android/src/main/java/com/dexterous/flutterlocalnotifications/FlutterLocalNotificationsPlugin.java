@@ -182,10 +182,13 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
 
         if(notificationDetails.actions != null) {
             int requestCode = 999;
+            String testStr;
             for (NotificationAction action : notificationDetails.actions) {
                 HashMap<String, Object> aRecord = new HashMap<String, Object>();
                 aRecord.put("act_id",action.id);
                 aRecord.put("noti_id",notificationDetails.id);
+                testStr = String.valueOf(notificationDetails.id);
+                Log.d("FLN STATE : ","noti_id"+ testStr);
                 builder.addAction(new NotificationCompat.Action(null, action.title, PendingIntent.getBroadcast(context, requestCode ++,
                         new Intent(context, ActionBroadcastReceiver.class).setAction(ActionBroadcastReceiver.ACTION_TAPPED).putExtra("record", aRecord), 0)));
             }
@@ -237,7 +240,7 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
         return notification;
     }
     private static void setNumber(NotificationDetails notificationDetails , NotificationCompat.Builder builder) {
-        Log.d("NotificationBadgeCount1",notificationDetails.badgeCount.toString() +" : "+notificationDetails.id.toString());
+//        Log.d("NotificationBadgeCount1",notificationDetails.badgeCount.toString() +" : "+notificationDetails.id.toString());
         if(notificationDetails.id!=0)builder.setNumber(notificationDetails.badgeCount);
     }
     private static void setSmallIcon(Context context, NotificationDetails notificationDetails, NotificationCompat.Builder builder) {

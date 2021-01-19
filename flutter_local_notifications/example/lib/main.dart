@@ -49,19 +49,17 @@ class ReceivedNotification {
 /// all the setup has been done
 ///
 void notificationTapBackground(Map<String, dynamic> map) {
-
-  MethodChannel channel = MethodChannel("dexterous.com/flutter/local_notifications");
-
   print('notification action tapped: ${map["act_id"]}');
   print('notification id: ${map["noti_id"]}');
-  if(map["act_id"] == 'id_2') {
+  if (map["act_id"] == 'id_1') {
     print("삭제 시작");
-    // // wvcIns.flnApiInstance.flnPlugin.cancel(map["noti_id"]);
-    // FlutterLocalNotificationsPlugin plugin = FlutterLocalNotificationsPlugin();
-    // plugin.cancel(map['noti_id']);
-  }else{
+
+
 
   }
+
+  // TODO : MAIN ISOLATE로 MessageModel 하나 전송
+
 }
 Future<void> main() async {
   // needed if you intend to initialize in the `main` function
