@@ -46,12 +46,15 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
         
         startEngine(context);
         if(record.get("act_id").equals("id_1")) {
+            String str = String.valueOf(record.get("record"));
             Log.d("system","activity start");
+            Log.d("system","notiId : "+ str);
             Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
             startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
                     Intent.FLAG_ACTIVITY_NEW_TASK |
                     Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
+            
             notiCancel(context, record); // cancel notification
 
             Intent statusBarShutIntent = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
