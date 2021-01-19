@@ -188,7 +188,7 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
                 aRecord.put("act_id",action.id);
                 aRecord.put("noti_id",notificationDetails.id);
                 testStr = String.valueOf(notificationDetails.id);
-                Log.d("FLN STATE : ","noti_id"+ testStr);
+                Log.d("FLN STATE","aRecord : "+ aRecord.toString());
                 builder.addAction(new NotificationCompat.Action(null, action.title, PendingIntent.getBroadcast(context, requestCode ++,
                         new Intent(context, ActionBroadcastReceiver.class).setAction(ActionBroadcastReceiver.ACTION_TAPPED).putExtra("record", aRecord), 0)));
             }

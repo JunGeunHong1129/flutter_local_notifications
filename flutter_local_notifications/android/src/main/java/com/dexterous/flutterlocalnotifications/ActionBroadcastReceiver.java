@@ -48,7 +48,7 @@ public class ActionBroadcastReceiver extends BroadcastReceiver {
         if(record.get("act_id").equals("id_1")) {
             String str = String.valueOf(record.get("noti_id"));
             Log.d("system","activity start");
-            Log.d("system","notiId : "+ str);
+            Log.d("system","notiId : "+ record.toString());
             Intent startActivityIntent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
             startActivityIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT |
                     Intent.FLAG_ACTIVITY_NEW_TASK |
