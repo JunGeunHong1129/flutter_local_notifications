@@ -184,9 +184,10 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
             int requestCode = 999;
             for (NotificationAction action : notificationDetails.actions) {
                 Log.d("액션 ID", action.id);
-                if(action.id == "id_1")
+                if(action.id == "id_1") {
+                    Log.d("액션 ID", "확인 버튼 등록 시작");
                     builder.addAction(new NotificationCompat.Action(null, action.title, pendingIntent));
-                else {
+                } else {
                     HashMap<String, Object> aRecord = new HashMap<String, Object>();
                     aRecord.put("act_id", action.id);
                     aRecord.put("noti_id", notificationDetails.id);
