@@ -184,13 +184,17 @@ public class FlutterLocalNotificationsPlugin implements MethodCallHandler, Plugi
             int requestCode = 999;
             String testStr;
             for (NotificationAction action : notificationDetails.actions) {
-                HashMap<String, Object> aRecord = new HashMap<String, Object>();
-                aRecord.put("act_id",action.id);
-                aRecord.put("noti_id",notificationDetails.id);
-                testStr = String.valueOf(notificationDetails.id);
-                Log.d("FLN STATE","aRecord : "+ aRecord.toString());
-                builder.addAction(new NotificationCompat.Action(null, action.title, PendingIntent.getBroadcast(context, requestCode++,
-                        new Intent(context, ActionBroadcastReceiver.class).setAction(ActionBroadcastReceiver.ACTION_TAPPED).putExtra("record", aRecord), PendingIntent.FLAG_UPDATE_CURRENT)));
+                if(action.id == "id_1")
+                    builder.addAction(new NotificationCompat.Action(null, action.title, pendingIntent));
+                else {
+                    HashMap<String, Object> aRecord = new HashMap<String, Object>();
+                    aRecord.put("act_id", action.id);
+                    aRecord.put("noti_id", notificationDetails.id);
+                    testStr = String.valueOf(notificationDetails.id);
+                    Log.d("FLN STATE", "aRecord : " + aRecord.toString());
+                    builder.addAction(new NotificationCompat.Action(null, action.title, PendingIntent.getBroadcast(context, requestCode++,
+                            new Intent(context, ActionBroadcastReceiver.class).setAction(ActionBroadcastReceiver.ACTION_TAPPED).putExtra("record", aRecord), PendingIntent.FLAG_UPDATE_CURRENT)));
+                }
             }
         }
         setSmallIcon(context, notificationDetails, builder);
