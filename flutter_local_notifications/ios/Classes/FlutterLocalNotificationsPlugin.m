@@ -893,11 +893,13 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
         if (!actionEventSink) {
             actionEventSink = [[ActionEventSink alloc] init];
         }
-        [actionEventSink addItem:@{@"act_id": response.actionIdentifier, @"noti_id":response.notification.request.content.userInfo[NOTIFICATION_ID]}];
         
-        
-        [self startEngineIfNeeded];
-        
+        if([response.actionIdentifier isEqualToString: @"id_1"]) [self handleSelectNotification:(NSString *) response.notification.request.content.userInfo[PAYLOAD]];
+        else {
+            [actionEventSink addItem:@{@"act_id": response.actionIdentifier, @"noti_id":response.notification.request.content.userInfo[NOTIFICATION_ID]}];
+            [self startEngineIfNeeded];
+            
+        }
         completionHandler();
     }
 }
