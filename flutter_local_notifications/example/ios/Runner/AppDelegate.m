@@ -28,7 +28,7 @@ void registerPlugins(NSObject<FlutterPluginRegistry> *registry){
     }
     
     FlutterViewController* controller = (FlutterViewController*)self.window.rootViewController;
-
+    
     FlutterMethodChannel* channel = [FlutterMethodChannel
                                             methodChannelWithName:@"dexterx.dev/flutter_local_notifications_example"
                                             binaryMessenger:controller.binaryMessenger];

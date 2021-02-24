@@ -59,6 +59,7 @@ NSString *const SOUND = @"sound";
 NSString *const ATTACHMENTS = @"attachments";
 NSString *const ATTACHMENT_IDENTIFIER = @"identifier";
 NSString *const ATTACHMENT_FILE_PATH = @"filePath";
+NSString *const THREAD_IDENTIFIER = @"threadIdentifier";
 NSString *const PRESENT_ALERT = @"presentAlert";
 NSString *const PRESENT_SOUND = @"presentSound";
 NSString *const PRESENT_BADGE = @"presentBadge";
@@ -707,6 +708,9 @@ static FlutterError *getFlutterError(NSError *error) {
         if([self containsKey:@"categoryIdentifier" forDictionary:platformSpecifics]) {
             content.categoryIdentifier = platformSpecifics[@"categoryIdentifier"];
         }
+        if([self containsKey:THREAD_IDENTIFIER forDictionary:platformSpecifics]){
+            content.threadIdentifier = platformSpecifics[THREAD_IDENTIFIER];
+        }
     }
     
     
@@ -714,6 +718,7 @@ static FlutterError *getFlutterError(NSError *error) {
         content.sound = UNNotificationSound.defaultSound;
     }
     content.userInfo = [self buildUserDict:arguments[ID] title:content.title presentAlert:presentAlert presentSound:presentSound presentBadge:presentBadge payload:arguments[PAYLOAD]];
+    NSLog(@"Thread-ID check before show up : %@", [content description]);
     return content;
 }
 

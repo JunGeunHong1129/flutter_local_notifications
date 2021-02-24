@@ -11,7 +11,8 @@ class IOSNotificationDetails {
     this.badgeNumber,
     this.attachments,
     this.subtitle,
-    this.categoryIdentifier
+    this.categoryIdentifier,
+    this.threadIdentifier
   });
 
   /// Display an alert when the notification is triggered while app is
@@ -67,4 +68,10 @@ class IOSNotificationDetails {
   final String subtitle;
 
   final String categoryIdentifier;
+
+  /// Specifies the thread identifier that can be used to group
+  /// notifications together.
+  ///
+  /// This property is only applicable to iOS 10 or newer.
+  final String threadIdentifier;
 }

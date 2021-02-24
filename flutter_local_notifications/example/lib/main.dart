@@ -601,6 +601,12 @@ class _HomePageState extends State<HomePage> {
                           await _showNotificationWithAttachment();
                         },
                       ),
+                      PaddedRaisedButton(
+                        buttonText: 'Show notifications with thread identifier',
+                        onPressed: () async {
+                          await _showNotificationsWithThreadIdentifier();
+                        },
+                      ),
                     ],
                   ],
                 ),
@@ -1344,6 +1350,34 @@ class _HomePageState extends State<HomePage> {
     await flutterLocalNotificationsPlugin.show(
         0, 'icon badge title', 'icon badge body', platformChannelSpecifics,
         payload: 'item x');
+  }
+  Future<void> _showNotificationsWithThreadIdentifier() async {
+    NotificationDetails buildNotificationDetailsForThread(
+        String threadIdentifier,
+        ) {
+      final IOSNotificationDetails iOSPlatformChannelSpecifics =
+      IOSNotificationDetails(threadIdentifier: threadIdentifier);
+      return NotificationDetails(iOS: iOSPlatformChannelSpecifics);
+    }
+
+    final NotificationDetails thread1PlatformChannelSpecifics =
+    buildNotificationDetailsForThread('thread1');
+    final NotificationDetails thread2PlatformChannelSpecifics =
+    buildNotificationDetailsForThread('thread2');
+
+    await flutterLocalNotificationsPlugin.show(
+        0, 'thread 1', 'first notification', thread1PlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        1, 'thread 1', 'second notification', thread1PlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        2, 'thread 1', 'third notification', thread1PlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.show(
+        3, 'thread 2', 'first notification', thread2PlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        4, 'thread 2', 'second notification', thread2PlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        5, 'thread 2', 'third notification', thread2PlatformChannelSpecifics);
   }
 
   Future<void> _showNotificationWithoutTimestamp() async {
